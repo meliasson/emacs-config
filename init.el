@@ -1,60 +1,60 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Misc settings.
+;; Misc settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; no splash
+;; No splash.
 (setq inhibit-splash-screen t)
 
-;; no menu
+;; No menu.
 (menu-bar-mode -1)
 
-;; no tabs
+;; No tabs.
 (setq-default indent-tabs-mode nil)
 
-;; no backups
+;; No backups.
 (setq make-backup-files nil)
 
-;; show column number
+;; Show column number.
 (column-number-mode t)
 
-;; highlight current line
+;; Highlight current line.
 (global-hl-line-mode t)
 
-;; show matching parens
+;; Show matching parens.
 (show-paren-mode t)
 
-;; delete trailing whitespace on save
+;; Delete trailing whitespace on save.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; y or n
+;; y or n.
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package management
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; list the packages you want
+;; List packages to install if missing.
 (setq package-list '(flycheck))
 
-;; list the repositories containing them
+;; List repositories containing the packages.
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
 
-;; load installed packages
+;; Load installed packages.
 (package-initialize)
 
-;; fetch the list of packages available
+;; Fetch list of packages available.
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; install the missing packages
+;; Install missing packages.
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
 
-;; avoid loading installed packages again after processing the init file
+;; Avoid loading installed packages again after processing the init file.
 (setq package-enable-at-startup nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -66,6 +66,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ido
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 package-enable-at-startup
 (ido-mode 1)
 (setq ido-enable-flex-matching t)
