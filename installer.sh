@@ -7,4 +7,4 @@ SETTINGS_DIR="$HOME/.emacs.s"
 
 # Create symlink.
 rm $HOME/.emacs.d/init.el
-ln -s $SETTINGS_DIR/init.el $HOME/.emacs.d/personal/init.el
+ln -s $SETTINGS_DIR/init.el $HOME/.emacs.d/init.el
