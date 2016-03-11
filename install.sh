@@ -6,5 +6,8 @@ SETTINGS_DIR="$HOME/.emacs.s"
 /usr/bin/env git clone $SETTINGS_URL $SETTINGS_DIR
 
 # Create symlink.
-rm $HOME/.emacs.d/init.el
+if [ -f $HOME/.emacs.d/init.el ]
+then
+    rm $HOME/.emacs.d/init.el
+fi
 ln -s $SETTINGS_DIR/init.el $HOME/.emacs.d/init.el
