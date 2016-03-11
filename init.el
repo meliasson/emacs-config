@@ -1,39 +1,145 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package management
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :config
+  (ido-mode 1)
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+
+(use-package flx-ido
+  :ensure t
+  :config
+  (flx-ido-mode 1)
+  ;; disable ido faces to see flx highlights
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil))
+
+(use-package nyan-mode
+  :ensure t
+  :config
+  (nyan-mode 1))
+
+(use-package smex
+  :ensure t
+  :config
+  (global-set-key (kbd "M-x") 'smex)
+  ;; the old M-x
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+
+(use-package coffee-mode
+  :ensure t)
+
+(use-package flycheck
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (setq flycheck-ruby-rubocop-executable "~/.rbenv/shims/rubocop"))
+
+(if (fboundp 'global-flycheck-mode)
+    (global-flycheck-mode +1)
+  (add-hook 'prog-mode-hook 'flycheck-mode))
+
+(use-package smartparens
+  :ensure t
+  :diminish smartparens-mode
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode 1))
+
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml\\'")
+
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Misc settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; No splash.
-(setq inhibit-splash-screen t)
+;; disable startup screen
+(setq inhibit-startup-screen t)
 
-;; No menu.
-(menu-bar-mode -1)
+;; disable tool bar
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
 
-;; No tabs.
-(setq-default indent-tabs-mode nil)
+;; disable scroll bar
+(scroll-bar-mode -1)
 
-;; No backups.
-(setq make-backup-files nil)
+;; disable blinking cursor
+(blink-cursor-mode -1)
 
-;; Show column number.
+;; disable bell ring
+(setq ring-bell-function 'ignore)
+
+;; highlight the current line
+(global-hl-line-mode +1)
+
+;; nice scrolling
+(setq scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1)
+
+;; map meta to command key
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier nil)
+
+;; mode line settings
+(line-number-mode t)
 (column-number-mode t)
+(size-indication-mode t)
 
-;; Highlight current line.
-(global-hl-line-mode t)
-
-;; Show matching parens.
-(show-paren-mode t)
-
-;; Do whitespace cleanup on save.
-(add-hook 'before-save-hook 'whitespace-cleanup)
-
-;; y or n.
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Bind commenting.
+;; bind commenting
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 
-;; Bind cleaning.
+;; bind cleaning
 (global-set-key (kbd "C-c n") 'simple-clean-region-or-buffer)
+
+;; do whitespace cleanup on save
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
+;; no tabs
+(setq-default indent-tabs-mode nil)
+
+;; no backups
+(setq make-backup-files nil)
+
+;; revert buffers automatically when underlying files are changed externally
+(global-auto-revert-mode t)
+
+;; set font size (value is in 1/10pt, so 100 will give you 10pt)
+(set-face-attribute 'default nil :height 160)
+
+;; show matching parens
+(show-paren-mode t)
+
+;; y or n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; stop Ruby mode from auto-inserting encoding comment
+(setq ruby-insert-encoding-magic-comment nil)
+
+;; utf-8 always and forever
+(prefer-coding-system 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clean region or buffer
@@ -52,58 +158,28 @@
         (progn
           (indent-region (region-beginning) (region-end))
           (whitespace-cleanup)
-          (message "Cleaned selected region."))
+          (message "Cleaned selected region"))
       (progn
-        (simple-indent-buffer)
+        (simple-clean-buffer)
         (whitespace-cleanup)
-        (message "Cleaned buffer.")))))
+        (message "Cleaned buffer")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Package management
+;; Automatically save buffers associated with files on buffer switch
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; List packages to install if missing.
-(setq package-list '(flycheck smex))
-
-;; List repositories containing the packages.
-(setq package-archives '(("elpa" . "http://tromey.com/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
-
-;; Load installed packages.
-(package-initialize)
-
-;; Fetch list of packages available.
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Install missing packages.
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
-
-;; Avoid loading installed packages again after processing the init file.
-(setq package-enable-at-startup nil)
+(defadvice switch-to-buffer (before save-buffer-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice other-window (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Flycheck
+;; Advice ido to reopen file as root if current user lacks write
+;; permission for it
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Ido
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Smex
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(global-set-key (kbd "M-x") 'smex)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(defadvice ido-find-file (after find-file-sudo activate)
+  "Find file as root if necessary."
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
