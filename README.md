@@ -1,9 +1,9 @@
 # emacs-mini
 
-My minimal Emacs config.
+My almost minimal Emacs config.
 
 ## Installation
 
 ```bash
-curl https://raw.githubusercontent.com/meliasson/emacs-mini/master/installer.sh | sh
+curl https://raw.githubusercontent.com/meliasson/emacs-mini/master/install.sh | sh
 ```
