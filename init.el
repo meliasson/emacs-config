@@ -83,6 +83,14 @@
 ;; custom file
 (setq custom-file "~/.emacs.s/custom.el")
 
+;; customize minibuffer startup message
+(defvar current-user
+  (getenv
+   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
+(defun display-startup-echo-area-message ()
+  "Customize minibuffer startup message."
+  (message "Hack away, Master %s!" current-user))
+
 ;; disable startup screen
 (setq inhibit-startup-screen t)
 
