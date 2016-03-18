@@ -80,6 +80,9 @@
 ;; Misc settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; custom file
+(setq custom-file "~/.emacs.s/custom.el")
+
 ;; disable startup screen
 (setq inhibit-startup-screen t)
 
