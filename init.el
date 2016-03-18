@@ -33,6 +33,11 @@
   :config
   (nyan-mode 1))
 
+(use-package markdown-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+
 (use-package smex
   :ensure t
   :config
