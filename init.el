@@ -13,6 +13,14 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(use-package ag
+  :ensure t)
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
 (use-package ido-vertical-mode
   :ensure t
   :config
