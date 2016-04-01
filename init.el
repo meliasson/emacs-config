@@ -54,7 +54,9 @@
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
 (use-package coffee-mode
-  :ensure t)
+  :ensure t
+  :config
+  (custom-set-variables '(coffee-tab-width 2)))
 
 (use-package flycheck
   :config
