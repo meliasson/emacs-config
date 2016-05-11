@@ -199,13 +199,20 @@
         (message "Cleaned buffer")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Automatically save buffers associated with files on buffer switch
+;; Automatically save buffers
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; save buffers associated with files on buffer switch
 (defadvice switch-to-buffer (before save-buffer-now activate)
   (when buffer-file-name (save-buffer)))
 (defadvice other-window (before other-window-now activate)
   (when buffer-file-name (save-buffer)))
+
+;; save all files on loss of focus
+(defun save-all ()
+  (interactive)
+  (save-some-buffers t))
+(add-hook 'focus-out-hook 'save-all)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Advice ido to reopen file as root if current user lacks write
