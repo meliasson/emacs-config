@@ -95,6 +95,9 @@
 ;; Misc settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; run Lisp under Emacs
+(setq inferior-lisp-program "/usr/bin/clisp")
+
 ;; custom file
 (setq custom-file "~/.emacs.s/custom.el")
 
