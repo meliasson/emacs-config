@@ -201,14 +201,12 @@
 ;; Automatically save buffers
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; save buffers associated with files on buffer switch
 (defadvice switch-to-buffer (before save-buffer-now activate)
-  (when buffer-file-name (save-buffer)))
-(defadvice other-window (before other-window-now activate)
+  "Save buffer when switching file in buffer."
   (when buffer-file-name (save-buffer)))
 
-;; save all files on loss of focus
 (defun save-all ()
+  "Save buffers on loss of focus."
   (interactive)
   (save-some-buffers t))
 (add-hook 'focus-out-hook 'save-all)
