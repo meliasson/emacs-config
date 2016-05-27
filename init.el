@@ -61,11 +61,10 @@
 (use-package flycheck
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)
-  (setq flycheck-ruby-rubocop-executable "~/.rbenv/shims/rubocop"))
-
-(if (fboundp 'global-flycheck-mode)
-    (global-flycheck-mode +1)
-  (add-hook 'prog-mode-hook 'flycheck-mode))
+  (setq flycheck-ruby-rubocop-executable "~/.rbenv/shims/rubocop")
+  (if (fboundp 'global-flycheck-mode)
+      (global-flycheck-mode +1)
+    (add-hook 'prog-mode-hook 'flycheck-mode)))
 
 (use-package restclient
   :ensure t
