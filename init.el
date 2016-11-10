@@ -71,6 +71,10 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode)))
 
+(use-package sass-mode
+  :ensure t
+  :mode "\\.sass\\'")
+
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
