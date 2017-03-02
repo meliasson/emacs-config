@@ -133,7 +133,7 @@
 (global-hl-line-mode +1)
 
 ;; nice scrolling
-(setq scroll-margin 0
+(setq scroll-margin 5
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
@@ -178,6 +178,9 @@
 
 ;; utf-8 always and forever
 (prefer-coding-system 'utf-8)
+
+;; set JavaScript indentation width
+(setq js-indent-level 2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clean region or buffer
