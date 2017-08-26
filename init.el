@@ -210,14 +210,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defadvice switch-to-buffer (before save-buffer-now activate)
-  "Save buffer when switching file in buffer."
+  "Save buffer when switching to other buffer."
+  (when buffer-file-name (save-buffer)))
+(defadvice other-window (before other-window-now activate)
+  "Save buffer when switching to other (Emacs) window."
   (when buffer-file-name (save-buffer)))
 
-(defun save-all ()
-  "Save buffers on loss of focus."
-  (interactive)
-  (save-some-buffers t))
-(add-hook 'focus-out-hook 'save-all)
+;; save on loss of (Emacs) focus
+;; No bueno until I've figured out how to disable Emacs from attempting
+;; to auto-save for example the scratch and minibuffer.
+;(add-hook 'focus-out-hook 'save-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Advice ido to reopen file as root if current user lacks write
