@@ -83,6 +83,11 @@
   (require 'smartparens-config)
   (smartparens-global-mode 1))
 
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode))
+
 (use-package yaml-mode
   :ensure t
   :mode "\\.yml\\'")
@@ -183,8 +188,6 @@
 
 ;; set JavaScript indentation width
 (setq js-indent-level 2)
-
-(global-undo-tree-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clean region or buffer
