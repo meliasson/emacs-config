@@ -60,6 +60,7 @@
   (custom-set-variables '(coffee-tab-width 2)))
 
 (use-package flycheck
+  :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (setq flycheck-ruby-rubocop-executable "~/.rbenv/shims/rubocop")
