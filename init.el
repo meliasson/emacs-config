@@ -173,7 +173,7 @@
 (global-auto-revert-mode t)
 
 ;; set font size (value is in 1/10pt, so 100 will give you 10pt)
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 160)
 
 ;; show matching parens
 (show-paren-mode t)
