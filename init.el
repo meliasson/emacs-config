@@ -107,6 +107,9 @@
 ;; Misc settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; visible line numbers are nice when pair and mob programming
+;(global-linum-mode t)
+
 ;; run Lisp under Emacs
 (setq inferior-lisp-program "/usr/bin/clisp")
 
