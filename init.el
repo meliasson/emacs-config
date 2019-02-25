@@ -193,9 +193,15 @@
 ;; utf-8 always and forever
 (prefer-coding-system 'utf-8)
 
-;; set JavaScript indentation width
+;; set JavaScript indentation offset
 (setq js-indent-level 2)
 (setq js-switch-indent-offset 2)
+
+;; set CSS indentation offset
+(setq css-indent-offset 2)
+
+;; ensure that file ends with newline
+(setq require-final-newline t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clean region or buffer
