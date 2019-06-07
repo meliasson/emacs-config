@@ -14,6 +14,13 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(use-package add-node-modules-path
+  :ensure t
+  :config
+  ;; automatically run the function when web-mode starts
+  (eval-after-load 'web-mode
+    '(add-hook 'web-mode-hook 'add-node-modules-path)))
+
 (use-package ag
   :ensure t)
 
@@ -96,6 +103,7 @@
 
 (use-package web-mode
   :ensure t
+  :after (add-node-modules-path)
   :config
   (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
@@ -255,20 +263,3 @@
   (unless (and buffer-file-name
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Allows Emacs to find project based installs of e.g. eslint. See
-;; https://github.com/codesuki/add-node-modules-path and it's license.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun my/use-eslint-from-node-modules ()
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                        root))))
-    (when (and eslint (file-executable-p eslint))
-      (setq-local flycheck-javascript-eslint-executable eslint))))
-
-(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
