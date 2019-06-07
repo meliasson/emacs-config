@@ -144,7 +144,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; let Emacs zone out after a while
-(setq zone-timer (run-with-idle-timer 60 t 'zone))
+;; (setq zone-timer (run-with-idle-timer 60 t 'zone))
 
 ;; highlight the current line
 (global-hl-line-mode +1)
