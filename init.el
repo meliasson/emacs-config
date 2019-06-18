@@ -24,47 +24,15 @@
 (use-package ag
   :ensure t)
 
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (exec-path-from-shell-initialize))
-
-(use-package ido-vertical-mode
-  :ensure t
-  :config
-  (ido-mode 1)
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
-
-(use-package flx-ido
-  :ensure t
-  :config
-  (flx-ido-mode 1)
-  ;; disable ido faces to see flx highlights
-  (setq ido-enable-flex-matching t)
-  (setq ido-use-faces nil))
-
-(use-package nyan-mode
-  :ensure t
-  :config
-  (nyan-mode 1))
-
-(use-package markdown-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
-
-(use-package smex
-  :ensure t
-  :config
-  (global-set-key (kbd "M-x") 'smex)
-  ;; the old M-x
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
-
 (use-package coffee-mode
   :ensure t
   :config
   (custom-set-variables '(coffee-tab-width 2)))
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package flycheck
   :ensure t
@@ -75,6 +43,31 @@
   (if (fboundp 'global-flycheck-mode)
       (global-flycheck-mode +1)
     (add-hook 'prog-mode-hook 'flycheck-mode)))
+
+(use-package flx-ido
+  :ensure t
+  :config
+  (flx-ido-mode 1)
+  ;; disable ido faces to see flx highlights
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :config
+  (ido-mode 1)
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+
+(use-package markdown-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+
+(use-package nyan-mode
+  :ensure t
+  :config
+  (nyan-mode 1))
 
 (use-package prettier-js
   :ensure t
@@ -97,14 +90,17 @@
   (require 'smartparens-config)
   (smartparens-global-mode 1))
 
+(use-package smex
+  :ensure t
+  :config
+  (global-set-key (kbd "M-x") 'smex)
+  ;; the old M-x
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+
 (use-package undo-tree
   :ensure t
   :config
   (global-undo-tree-mode))
-
-(use-package yaml-mode
-  :ensure t
-  :mode "\\.yml\\'")
 
 (use-package web-mode
   :ensure t
@@ -117,6 +113,10 @@
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-script-padding 2))
+
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml\\'")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Misc settings
