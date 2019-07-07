@@ -17,9 +17,7 @@
 (use-package add-node-modules-path
   :ensure t
   :config
-  ;; automatically run the function when web-mode starts
-  (eval-after-load 'web-mode
-    '(add-hook 'web-mode-hook 'add-node-modules-path)))
+  (add-hook 'js-mode-hook #'add-node-modules-path))
 
 (use-package ag
   :ensure t)
@@ -72,7 +70,7 @@
 (use-package prettier-js
   :ensure t
   :config
-  (add-hook 'web-mode-hook 'prettier-js-mode))
+  (add-hook 'js-mode-hook 'prettier-js-mode))
 
 (use-package restclient
   :ensure t
@@ -104,11 +102,9 @@
 
 (use-package web-mode
   :ensure t
-  :after (add-node-modules-path)
   :config
   (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-markup-indent-offset 2)
