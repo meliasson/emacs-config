@@ -95,6 +95,11 @@
   ;; the old M-x
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
+(use-package super-save
+  :ensure t
+  :config
+  (super-save-mode +1))
+
 (use-package undo-tree
   :ensure t
   :config
