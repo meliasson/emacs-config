@@ -72,6 +72,13 @@
   :config
   (add-hook 'js-mode-hook 'prettier-js-mode))
 
+(use-package rubocop
+  :ensure t
+  :config
+  (add-hook 'ruby-mode-hook 'rubocop-mode)
+  :custom
+  (rubocop-autocorrect-on-save t))
+
 (use-package restclient
   :ensure t
   :config
