@@ -75,6 +75,11 @@
   :config
   (add-hook 'js-mode-hook 'prettier-js-mode))
 
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1))
+
 (use-package rubocop
   :ensure t
   :config
