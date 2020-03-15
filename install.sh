@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# Clone Emacs settings.
-SETTINGS_URL="https://github.com/meliasson/emacs-mini.git"
-SETTINGS_DIR="$HOME/.emacs.s"
+# Clone config.
+CONFIG_URL="git@github.com:meliasson/emacs-config.git"
+CONFIG_DIR="$HOME/.emacs.c"
 /usr/bin/env git clone $SETTINGS_URL $SETTINGS_DIR
 
 # Create directory.
