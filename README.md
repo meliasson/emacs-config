@@ -1,6 +1,6 @@
-# emacs-mini
+# Emacs config
 
-My almost minimal Emacs config.
+My Emacs config. Trying to stick to defaults.
 
 ## Installation
 
