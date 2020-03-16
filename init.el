@@ -21,14 +21,16 @@ TODO: Adapt to new advice mechanism."
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (defun simple-clean-region-or-buffer ()
-  "Cleans a region if selected, otherwise the whole buffer."
+  "Cleans region if selected, otherwise the whole buffer.
+
+Indents and removes whitespace."
   (interactive)
   (save-excursion
     (if (region-active-p)
         (progn
           (indent-region (region-beginning) (region-end))
           (whitespace-cleanup)
-          (message "Cleaned selected region"))
+          (message "Cleaned region"))
       (progn
         (indent-region (point-min) (point-max))
         (whitespace-cleanup)
