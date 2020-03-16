@@ -36,6 +36,12 @@ Indents and removes whitespace."
         (whitespace-cleanup)
         (message "Cleaned buffer")))))
 
+(defun ensure-package (package)
+    "Install PACKAGE if it isn't installed already."
+    (unless (package-installed-p package)
+      (package-refresh-contents)
+      (package-install package)))
+
 ;;
 ;; Package management
 ;;
@@ -50,9 +56,9 @@ Indents and removes whitespace."
 ;; Modes
 ;;
 
-(unless (package-installed-p 'flycheck)
-  (package-refresh-contents)
-  (package-install 'flycheck))
+(ensure-package 'color-theme-sanityinc-solarized)
+
+(ensure-package 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 (defvar ido-enable-flex-matching)
@@ -61,36 +67,22 @@ Indents and removes whitespace."
 (setq ido-everywhere t)
 (ido-mode 1)
 
-(unless (package-installed-p 'magit)
-  (package-refresh-contents)
-  (package-install 'magit))
+(ensure-package 'magit)
 
-(unless (package-installed-p 'nyan-mode)
-  (package-refresh-contents)
-  (package-install 'nyan-mode))
+(ensure-package 'nyan-mode)
 (nyan-mode 1)
 
-(unless (package-installed-p 'restclient)
-  (package-refresh-contents)
-  (package-install 'restclient))
+(ensure-package 'rest-client)
 (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
 
-(unless (package-installed-p 'sly)
-  (package-refresh-contents)
-  (package-install 'sly))
+(ensure-package 'sly)
 
-(unless (package-installed-p 'smex)
-  (package-refresh-contents)
-  (package-install 'smex))
+(ensure-package 'smex)
 (global-set-key (kbd "M-x") 'smex)
 
-(unless (package-installed-p 'super-save)
-  (package-refresh-contents)
-  (package-install 'super-save))
+(ensure-package 'super-save)
 
-(unless (package-installed-p 'web-mode)
-  (package-refresh-contents)
-  (package-install 'web-mode))
+(ensure-package 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
 ;;
