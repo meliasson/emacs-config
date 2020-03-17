@@ -17,14 +17,11 @@
 ;; Functions
 ;;
 
-(defun switch-to-root-if-required ()
-  "Switch to root if required.
-
-If editing of current buffer requires root privileges, this function
-repopens file as root."
-  (unless (and buffer-file-name
-               (file-writable-p buffer-file-name))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+(defun ensure-package (package)
+    "Install PACKAGE if it isn't installed already."
+    (unless (package-installed-p package)
+      (package-refresh-contents)
+      (package-install package)))
 
 (defun simple-clean-region-or-buffer ()
   "Cleans region if selected, otherwise the whole buffer.
@@ -42,11 +39,14 @@ Indents and removes whitespace."
         (whitespace-cleanup)
         (message "Cleaned buffer")))))
 
-(defun ensure-package (package)
-    "Install PACKAGE if it isn't installed already."
-    (unless (package-installed-p package)
-      (package-refresh-contents)
-      (package-install package)))
+(defun switch-to-root-if-required ()
+  "Switch to root if required.
+
+If editing of current buffer requires root privileges, this function
+repopens file as root."
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 ;;
 ;; Package management
