@@ -8,14 +8,20 @@
 ;;; Code:
 
 ;;
+;; Advices
+;;
+
+(advice-add 'ido-find-file :after #'switch-to-root-if-required)
+
+;;
 ;; Functions
 ;;
 
-(defadvice ido-find-file (after find-file-sudo activate)
-  "Open write protected file as root.
+(defun switch-to-root-if-required ()
+  "Switch to root if required.
 
-Advices ido to reopen write protected files with sudo.
-TODO: Adapt to new advice mechanism."
+If editing of current buffer requires root privileges, this function
+repopens file as root."
   (unless (and buffer-file-name
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
