@@ -72,7 +72,7 @@ Indents and removes whitespace."
 (ensure-package 'nyan-mode)
 (nyan-mode 1)
 
-(ensure-package 'rest-client)
+(ensure-package 'restclient)
 (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
 
 (ensure-package 'sly)
