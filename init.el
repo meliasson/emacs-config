@@ -73,6 +73,9 @@ repopens file as root."
 (setq ido-everywhere t)
 (ido-mode 1)
 
+(defvar js-indent-level)
+(setq js-indent-level 2)
+
 (ensure-package 'magit)
 
 (ensure-package 'nyan-mode)
