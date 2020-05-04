@@ -90,6 +90,7 @@ repopens file as root."
 (global-set-key (kbd "M-x") 'smex)
 
 (ensure-package 'super-save)
+(super-save-mode t)
 
 (ensure-package 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
