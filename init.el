@@ -100,6 +100,7 @@ repopens file as root."
 ;;
 
 ;; run Lisp under Emacs
+(defvar inferior-lisp-program)
 (setq inferior-lisp-program "/usr/local/bin/clisp")
 
 ;; custom file
