@@ -64,6 +64,9 @@ repopens file as root."
 
 (ensure-package 'color-theme-sanityinc-solarized)
 
+(ensure-package 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
+
 (ensure-package 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
@@ -78,8 +81,15 @@ repopens file as root."
 
 (ensure-package 'magit)
 
+(ensure-package 'add-node-modules-path)
+(add-hook 'js-mode-hook #'add-node-modules-path)
+;;(add-hook 'flycheck-mode-hook 'add-node-modules-path)
+
 (ensure-package 'nyan-mode)
 (nyan-mode 1)
+
+(ensure-package 'prettier-js)
+(add-hook 'js-mode-hook 'prettier-js-mode)
 
 (ensure-package 'restclient)
 (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
