@@ -43,7 +43,7 @@ Indents and removes whitespace."
   "Switch to root if required.
 
 If editing of current buffer requires root privileges, this function
-repopens file as root."
+reopens file as root."
   (unless (and buffer-file-name
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
