@@ -62,6 +62,8 @@ reopens file as root."
 ;; Modes
 ;;
 
+(ensure-package 'ag)
+
 (ensure-package 'color-theme-sanityinc-solarized)
 
 (ensure-package 'exec-path-from-shell)
