@@ -72,6 +72,11 @@ reopens file as root."
 (ensure-package 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+(ensure-package 'go-mode)
+(add-hook 'go-mode-hook
+          '(lambda()
+             (add-hook 'before-save-hook #'gofmt-before-save)))
+
 (defvar ido-enable-flex-matching)
 (setq ido-enable-flex-matching t)
 (defvar ido-everywhere)
