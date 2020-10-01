@@ -62,6 +62,9 @@ reopens file as root."
 ;; Modes
 ;;
 
+(ensure-package 'add-node-modules-path)
+(add-hook 'js-mode-hook #'add-node-modules-path)
+
 (ensure-package 'ag)
 
 (ensure-package 'color-theme-sanityinc-solarized)
@@ -86,11 +89,15 @@ reopens file as root."
 (defvar js-indent-level)
 (setq js-indent-level 2)
 
+(ensure-package 'json-mode)
+
+(ensure-package 'markdown-mode)
+
 (ensure-package 'magit)
 
-(ensure-package 'add-node-modules-path)
-(add-hook 'js-mode-hook #'add-node-modules-path)
-;;(add-hook 'flycheck-mode-hook 'add-node-modules-path)
+(ensure-package 'mocha)
+
+(ensure-package 'nodejs-repl)
 
 (ensure-package 'nyan-mode)
 (nyan-mode 1)
@@ -111,10 +118,15 @@ reopens file as root."
 
 (ensure-package 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(defvar web-mode-markup-indent-offset)
+(setq web-mode-markup-indent-offset 2)
 
 ;;
 ;; Misc. settings
 ;;
+
+;; flash screen instead of audible ding
+(setq ring-bell-function 'ignore)
 
 ;; run Lisp under Emacs
 (defvar inferior-lisp-program)
@@ -169,3 +181,10 @@ reopens file as root."
 
 ;; ensure that files end with newline
 (setq require-final-newline t)
+
+;; no automatic encoding comments in Ruby
+(defvar ruby-insert-encoding-magic-comment)
+(setq ruby-insert-encoding-magic-comment nil)
+
+;; less spaces in indents in SCSS mode
+(setq-default css-indent-offset 2)
