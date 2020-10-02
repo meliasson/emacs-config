@@ -3,7 +3,7 @@
 ;;; Commentary:
 
 ;; An attempt at bending Emacs to my will.  Without doing too
-;; much bending.
+;; much bending...
 
 ;;; Code:
 
