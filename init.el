@@ -17,12 +17,6 @@
 ;; Functions
 ;;
 
-(defun ensure-package (package)
-    "Install PACKAGE if it isn't installed already."
-    (unless (package-installed-p package)
-      (package-refresh-contents)
-      (package-install package)))
-
 (defun simple-clean-region-or-buffer ()
   "Cleans region if selected, otherwise the whole buffer.
 
@@ -57,80 +51,90 @@ reopens file as root."
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 ;;
-;; Modes
+;; Packages
 ;;
 
-(ensure-package 'add-node-modules-path)
-(add-hook 'js-mode-hook #'add-node-modules-path)
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t))
 
-(ensure-package 'ag)
+(use-package counsel
+  :ensure t)
 
-(ensure-package 'color-theme-sanityinc-solarized)
+(use-package swiper
+  :ensure t
+  :config
+  (global-set-key "\C-s" 'swiper))
 
-(ensure-package 'exec-path-from-shell)
-(exec-path-from-shell-initialize)
+(use-package super-save
+  :ensure t
+  :config
+  (super-save-mode t))
 
-(ensure-package 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  (setq projectile-completion-system 'ivy)
+  (global-set-key "\C-c\C-f" 'projectile--find-file))
 
-(ensure-package 'go-mode)
-(add-hook 'go-mode-hook
-          '(lambda()
-             (add-hook 'before-save-hook #'gofmt-before-save)))
+(use-package js
+  :ensure t
+  :config
+  (setq js-indent-level 2))
 
-(defvar ido-enable-flex-matching)
-(setq ido-enable-flex-matching t)
-(defvar ido-everywhere)
-(setq ido-everywhere t)
-(ido-mode 1)
+(use-package flycheck
+  :ensure t
+  :hook (after-init . global-flycheck-mode))
 
-(defvar js-indent-level)
-(setq js-indent-level 2)
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
-(ensure-package 'json-mode)
+(use-package add-node-modules-path
+  :ensure t
+  :hook js-mode)
 
-(ensure-package 'markdown-mode)
+(use-package prettier-js
+  :ensure t
+  :hook (js-mode . prettier-js-mode))
 
-(ensure-package 'magit)
+(use-package magit
+  :ensure t)
 
-(ensure-package 'mocha)
+;; (ensure-package 'go-mode)
+;; (add-hook 'go-mode-hook
+;;           '(lambda()
+;;              (add-hook 'before-save-hook #'gofmt-before-save)))
 
-(ensure-package 'nodejs-repl)
+;; (ensure-package 'nyan-mode)
+;; (nyan-mode 1)
 
-(ensure-package 'nyan-mode)
-(nyan-mode 1)
+;; (ensure-package 'restclient)
+;; (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
 
-(ensure-package 'prettier-js)
-(add-hook 'js-mode-hook 'prettier-js-mode)
+;; (ensure-package 'web-mode)
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
-(ensure-package 'restclient)
-(add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
+;; ;;
+;; ;; Misc. settings
+;; ;;
 
-(ensure-package 'sly)
+;; ;; run Lisp under Emacs
+;; (defvar inferior-lisp-program)
+;; (setq inferior-lisp-program "/usr/local/bin/clisp")
 
-(ensure-package 'smex)
-(global-set-key (kbd "M-x") 'smex)
-
-(ensure-package 'super-save)
-(super-save-mode t)
-
-(ensure-package 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(defvar web-mode-markup-indent-offset)
-(setq web-mode-markup-indent-offset 2)
-
-;;
-;; Misc. settings
-;;
-
-;; flash screen instead of audible ding
+;; no audible ding
 (setq ring-bell-function 'ignore)
-
-;; run Lisp under Emacs
-(defvar inferior-lisp-program)
-(setq inferior-lisp-program "/usr/local/bin/clisp")
 
 ;; custom file
 (setq custom-file "~/.emacs.s/custom.el")
@@ -181,10 +185,3 @@ reopens file as root."
 
 ;; ensure that files end with newline
 (setq require-final-newline t)
-
-;; no automatic encoding comments in Ruby
-(defvar ruby-insert-encoding-magic-comment)
-(setq ruby-insert-encoding-magic-comment nil)
-
-;; less spaces in indents in SCSS mode
-(setq-default css-indent-offset 2)
