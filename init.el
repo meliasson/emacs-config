@@ -3,7 +3,7 @@
 ;;; Commentary:
 
 ;; An attempt at bending Emacs to my will.  Without doing too
-;; much bending.
+;; much bending...
 
 ;;; Code:
 
@@ -16,12 +16,6 @@
 ;;
 ;; Functions
 ;;
-
-(defun ensure-package (package)
-    "Install PACKAGE if it isn't installed already."
-    (unless (package-installed-p package)
-      (package-refresh-contents)
-      (package-install package)))
 
 (defun simple-clean-region-or-buffer ()
   "Cleans region if selected, otherwise the whole buffer.
@@ -57,134 +51,161 @@ reopens file as root."
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 ;;
-;; Modes
+;; Packages
 ;;
 
-(ensure-package 'add-node-modules-path)
-(add-hook 'js-mode-hook #'add-node-modules-path)
+(use-package smex
+  :ensure t)
 
-(ensure-package 'ag)
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t))
 
-(ensure-package 'color-theme-sanityinc-solarized)
+(use-package counsel
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "M-x") 'counsel-M-x))
 
-(ensure-package 'exec-path-from-shell)
-(exec-path-from-shell-initialize)
+(use-package swiper
+  :ensure t
+  :config
+  (global-set-key (kbd "C-s") 'swiper))
 
-(ensure-package 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(use-package super-save
+  :ensure t
+  :config
+  (super-save-mode t))
 
-(ensure-package 'go-mode)
-(add-hook 'go-mode-hook
-          '(lambda()
-             (add-hook 'before-save-hook #'gofmt-before-save)))
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  (setq projectile-completion-system 'ivy)
+  (global-set-key "\C-c\C-f" 'projectile--find-file))
 
-(defvar ido-enable-flex-matching)
-(setq ido-enable-flex-matching t)
-(defvar ido-everywhere)
-(setq ido-everywhere t)
-(ido-mode 1)
+(use-package js
+  :ensure t
+  :config
+  (setq js-indent-level 2))
 
-(defvar js-indent-level)
-(setq js-indent-level 2)
+(use-package flycheck
+  :ensure t
+  :hook (after-init . global-flycheck-mode))
 
-(ensure-package 'json-mode)
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
-(ensure-package 'markdown-mode)
+(use-package add-node-modules-path
+  :ensure t
+  :hook js-mode)
 
-(ensure-package 'magit)
+(use-package prettier-js
+  :ensure t
+  :hook (js-mode . prettier-js-mode))
 
-(ensure-package 'mocha)
+(use-package magit
+  :ensure t)
 
-(ensure-package 'nodejs-repl)
+(use-package nyan-mode
+  :ensure t
+  :config
+  (nyan-mode 1))
 
-(ensure-package 'nyan-mode)
-(nyan-mode 1)
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-mode))
 
-(ensure-package 'prettier-js)
-(add-hook 'js-mode-hook 'prettier-js-mode)
+(use-package json-mode
+  :ensure t)
 
-(ensure-package 'restclient)
-(add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
+(use-package go-mode
+  :ensure t
+  :hook (before-save . gofmt-before-save))
 
-(ensure-package 'sly)
+(use-package restclient
+  :config
+  (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode)))
 
-(ensure-package 'smex)
-(global-set-key (kbd "M-x") 'smex)
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "markdown"))
 
-(ensure-package 'super-save)
-(super-save-mode t)
-
-(ensure-package 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(defvar web-mode-markup-indent-offset)
-(setq web-mode-markup-indent-offset 2)
+;; (ensure-package 'web-mode)
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
 ;;
 ;; Misc. settings
 ;;
 
-;; flash screen instead of audible ding
+;; Skip audible ding.
 (setq ring-bell-function 'ignore)
 
-;; run Lisp under Emacs
-(defvar inferior-lisp-program)
-(setq inferior-lisp-program "/usr/local/bin/clisp")
-
-;; custom file
+;; Set custom file.
 (setq custom-file "~/.emacs.s/custom.el")
 
-;; map meta to command key
+;; Map meta to command key.
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 
-;; disable tool bar
+;; Disable tool bar.
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 
-;; disable scroll bar
+;; Disable scroll bar.
 (scroll-bar-mode -1)
 
-;; increase font size
+;; Increase font size.
 (set-face-attribute 'default nil :height 160)
 
-;; display column number in mode line
+;; Display column number in mode line.
 (column-number-mode nil)
 
-;; bind commenting
+;; Bind commenting.
 (global-set-key (kbd "M-c") 'comment-or-uncomment-region)
 
-;; bind cleaning
+;; Bind cleaning.
 (global-set-key (kbd "M-n") 'simple-clean-region-or-buffer)
 
-;; do whitespace cleanup on save
+;; Do whitespace cleanup on save.
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;; no tabs
+;; Skip tabs.
 (setq-default indent-tabs-mode nil)
 
-;; no backups
+;; Skip backups.
 (setq make-backup-files nil)
 
-;; revert buffers automatically when underlying files are changed externally
+;; Revert buffers automatically when underlying files are changed
+;; externally.
 (global-auto-revert-mode t)
 
-;; show matching parens
+;; Show matching parentheses.
 (show-paren-mode t)
 
-;; y or n
+;; y or n instead of yes and no.
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; utf-8 always and forever
+;; UTF-8 always and forever.
 (prefer-coding-system 'utf-8)
 
-;; ensure that files end with newline
+;; Ensure that files end with newline.
 (setq require-final-newline t)
 
-;; no automatic encoding comments in Ruby
-(defvar ruby-insert-encoding-magic-comment)
-(setq ruby-insert-encoding-magic-comment nil)
-
-;; less spaces in indents in SCSS mode
-(setq-default css-indent-offset 2)
+(provide 'init)
+;;; init.el ends here
