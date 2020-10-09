@@ -59,6 +59,9 @@ reopens file as root."
 ;; Packages
 ;;
 
+(use-package smex
+  :ensure t)
+
 (use-package ivy
   :ensure t
   :config
@@ -67,12 +70,15 @@ reopens file as root."
   (setq enable-recursive-minibuffers t))
 
 (use-package counsel
-  :ensure t)
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "M-x") 'counsel-M-x))
 
 (use-package swiper
   :ensure t
   :config
-  (global-set-key "\C-s" 'swiper))
+  (global-set-key (kbd "C-s") 'swiper))
 
 (use-package super-save
   :ensure t
@@ -111,77 +117,95 @@ reopens file as root."
 (use-package magit
   :ensure t)
 
-;; (ensure-package 'go-mode)
-;; (add-hook 'go-mode-hook
-;;           '(lambda()
-;;              (add-hook 'before-save-hook #'gofmt-before-save)))
+(use-package nyan-mode
+  :ensure t
+  :config
+  (nyan-mode 1))
 
-;; (ensure-package 'nyan-mode)
-;; (nyan-mode 1)
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-mode))
 
-;; (ensure-package 'restclient)
-;; (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
+(use-package json-mode
+  :ensure t)
+
+(use-package go-mode
+  :ensure t
+  :hook (before-save . gofmt-before-save))
+
+(use-package restclient
+  :config
+  (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode)))
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "markdown"))
 
 ;; (ensure-package 'web-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
-;; ;;
-;; ;; Misc. settings
-;; ;;
+;;
+;; Misc. settings
+;;
 
-;; ;; run Lisp under Emacs
-;; (defvar inferior-lisp-program)
-;; (setq inferior-lisp-program "/usr/local/bin/clisp")
-
-;; no audible ding
+;; Skip audible ding.
 (setq ring-bell-function 'ignore)
 
-;; custom file
+;; Set custom file.
 (setq custom-file "~/.emacs.s/custom.el")
 
-;; map meta to command key
+;; Map meta to command key.
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 
-;; disable tool bar
+;; Disable tool bar.
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 
-;; disable scroll bar
+;; Disable scroll bar.
 (scroll-bar-mode -1)
 
-;; increase font size
+;; Increase font size.
 (set-face-attribute 'default nil :height 160)
 
-;; display column number in mode line
+;; Display column number in mode line.
 (column-number-mode nil)
 
-;; bind commenting
+;; Bind commenting.
 (global-set-key (kbd "M-c") 'comment-or-uncomment-region)
 
-;; bind cleaning
+;; Bind cleaning.
 (global-set-key (kbd "M-n") 'simple-clean-region-or-buffer)
 
-;; do whitespace cleanup on save
+;; Do whitespace cleanup on save.
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;; no tabs
+;; Skip tabs.
 (setq-default indent-tabs-mode nil)
 
-;; no backups
+;; Skip backups.
 (setq make-backup-files nil)
 
-;; revert buffers automatically when underlying files are changed externally
+;; Revert buffers automatically when underlying files are changed
+;; externally.
 (global-auto-revert-mode t)
 
-;; show matching parens
+;; Show matching parentheses.
 (show-paren-mode t)
 
-;; y or n
+;; y or n instead of yes and no.
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; utf-8 always and forever
+;; UTF-8 always and forever.
 (prefer-coding-system 'utf-8)
 
-;; ensure that files end with newline
+;; Ensure that files end with newline.
 (setq require-final-newline t)
+
+(provide 'init)
+;;; init.el ends here
