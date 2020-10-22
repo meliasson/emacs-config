@@ -17,6 +17,15 @@
 ;; Functions
 ;;
 
+(defun gem-hack ()
+  "Make Flycheck run Rubocop via bundle exec.
+
+Needed when Rubocop is nested inside another gem."
+  (make-variable-buffer-local 'flycheck-command-wrapper-function)
+                          (setq flycheck-command-wrapper-function
+                                (lambda (command)
+                                  (append '("bundle" "exec") command))))
+
 (defun simple-clean-region-or-buffer ()
   "Cleans region if selected, otherwise the whole buffer.
 
@@ -148,6 +157,10 @@ reopens file as root."
 
 ;; (ensure-package 'web-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(use-package rubocop
+  :ensure t
+  :hook (ruby-mode . rubocop-mode)
+  :hook (rubocop-mode . gem-hack))
 
 ;;
 ;; Misc. settings
