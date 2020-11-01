@@ -220,5 +220,11 @@ reopens file as root."
 ;; Ensure that files end with newline.
 (setq require-final-newline t)
 
+;; Show line numbers. (Nice when pair and mob programming.)
+(global-display-line-numbers-mode t)
+
+;; Highlight line containing cursor.
+(global-hl-line-mode t)
+
 (provide 'init)
 ;;; init.el ends here
