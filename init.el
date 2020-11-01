@@ -17,7 +17,7 @@
 ;; Functions
 ;;
 
-(defun gem-hack ()
+(defun flycheck-rubocop-via-bundle-exec ()
   "Make Flycheck run Rubocop via bundle exec.
 
 Needed when Rubocop is nested inside another gem."
@@ -160,7 +160,7 @@ reopens file as root."
 (use-package rubocop
   :ensure t
   :hook (ruby-mode . rubocop-mode)
-  :hook (rubocop-mode . gem-hack))
+  :hook (rubocop-mode . flycheck-rubocop-via-bundle-exec))
 
 ;;
 ;; Misc. settings
