@@ -160,8 +160,6 @@ reopens file as root."
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "markdown"))
 
-;; (ensure-package 'web-mode)
-;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (use-package rubocop
   :ensure t
   :hook (ruby-mode . rubocop-mode)
