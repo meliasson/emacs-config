@@ -172,6 +172,11 @@ reopens file as root."
 ;; Disable startup screen.
 (setq inhibit-startup-screen t)
 
+;; Redefine minibuffer startup message.
+(defun display-startup-echo-area-message ()
+  "Customize minibuffer startup message."
+  (message "(ง ͡ʘ ͜ ͡ʘ)ง"))
+
 ;; Skip audible ding.
 (setq ring-bell-function 'ignore)
 
