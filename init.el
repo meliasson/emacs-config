@@ -99,12 +99,17 @@ reopens file as root."
   :config
   (projectile-mode +1)
   (setq projectile-completion-system 'ivy)
-  (global-set-key "\C-c\C-f" 'projectile--find-file))
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (use-package js
   :ensure t
   :config
   (setq js-indent-level 2))
+
+(use-package css-mode
+  :ensure t
+  :config
+  (setq-default css-indent-offset 2))
 
 (use-package flycheck
   :ensure t
