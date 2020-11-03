@@ -177,6 +177,8 @@ reopens file as root."
 
 ;; Map meta to command key.
 (setq mac-command-modifier 'meta)
+
+;; Type brackets and curly braces with alt keys.
 (setq mac-option-modifier nil)
 
 ;; Disable tool bar.
