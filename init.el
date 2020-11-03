@@ -169,6 +169,9 @@ reopens file as root."
 ;; Misc. settings
 ;;
 
+;; Disable startup screen.
+(setq inhibit-startup-screen t)
+
 ;; Skip audible ding.
 (setq ring-bell-function 'ignore)
 
