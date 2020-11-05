@@ -71,6 +71,9 @@ reopens file as root."
 (use-package yaml-mode
   :ensure t)
 
+(use-package dockerfile-mode
+  :ensure t)
+
 (use-package smex
   :ensure t)
 
