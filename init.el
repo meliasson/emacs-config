@@ -68,6 +68,9 @@ reopens file as root."
 ;; Packages
 ;;
 
+(use-package yaml-mode
+  :ensure t)
+
 (use-package smex
   :ensure t)
 
