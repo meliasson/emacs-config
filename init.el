@@ -11,7 +11,9 @@
 ;; Advices
 ;;
 
-(advice-add 'ido-find-file :after #'switch-to-root-if-required)
+;; This dude isn't working! Ivy + hydra has an alternative that I
+;; don't like at the moment.
+;; (advice-add 'counsel-find-file :after #'switch-to-root-if-required)
 
 ;;
 ;; Functions
@@ -47,6 +49,7 @@ Indents and removes whitespace."
 
 If editing of current buffer requires root privileges, this function
 reopens file as root."
+  (interactive)
   (unless (and buffer-file-name
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
