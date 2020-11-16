@@ -24,9 +24,9 @@
 
 Needed when Rubocop is nested inside another gem."
   (make-variable-buffer-local 'flycheck-command-wrapper-function)
-                          (setq flycheck-command-wrapper-function
-                                (lambda (command)
-                                  (append '("bundle" "exec") command))))
+  (setq flycheck-command-wrapper-function
+        (lambda (command)
+          (append '("bundle" "exec") command))))
 
 (defun simple-clean-region-or-buffer ()
   "Cleans region if selected, otherwise the whole buffer.
