@@ -233,7 +233,9 @@ reopens file as root."
   (setq company-minimum-prefix-length 1)
   ;; Add yasnippet to all backends.
   (setq company-backends
-        (mapcar #'company-backend-with-yas company-backends)))
+        (mapcar #'company-backend-with-yas company-backends))
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous))
 
 (use-package yasnippet
   :hook (prog-mode . yas-minor-mode))
