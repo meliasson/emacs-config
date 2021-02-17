@@ -8,14 +8,6 @@
 ;;; Code:
 
 ;;
-;; Advices
-;;
-
-;; This dude isn't working! Ivy + hydra has an alternative that I
-;; don't like at the moment.
-;; (advice-add 'counsel-find-file :after #'switch-to-root-if-required)
-
-;;
 ;; Functions
 ;;
 
@@ -27,6 +19,16 @@ Needed when Rubocop is nested inside another gem."
   (setq flycheck-command-wrapper-function
         (lambda (command)
           (append '("bundle" "exec") command))))
+
+(defun company-backend-with-yas (backends)
+  "Add :with company-yasnippet to company BACKENDS.
+Taken from https://github.com/syl20bnr/spacemacs/pull/179."
+  (if (and (listp backends) (memq 'company-yasnippet backends))
+      backends
+    (append (if (consp backends)
+                backends
+              (list backends))
+            '(:with company-yasnippet))))
 
 (defun simple-clean-region-or-buffer ()
   "Cleans region if selected, otherwise the whole buffer.
@@ -54,200 +56,206 @@ reopens file as root."
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
+(defun display-startup-echo-area-message ()
+  "Customize minibuffer startup message."
+  (message "(ง ͡ʘ ͜ ͡ʘ)ง"))
+
 ;;
 ;; Package management
 ;;
 
 (require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t))
 
 ;;
-;; Packages
+;; Non-package settings
 ;;
 
-(use-package yaml-mode
-  :ensure t)
-
-(use-package dockerfile-mode
-  :ensure t)
-
-(use-package smex
-  :ensure t)
-
-(use-package ivy
-  :ensure t
+(use-package emacs
   :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t))
+  (blink-cursor-mode -1)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  ;; Show line numbers. (Nice when pair and mob programming.)
+  ;; (global-display-line-numbers-mode t)
+  (global-hl-line-mode t)
+  (global-set-key (kbd "M-c") 'comment-or-uncomment-region)
+  (global-set-key (kbd "M-n") 'simple-clean-region-or-buffer)
+  (set-face-attribute 'default nil :height 160)
+  (setq auto-window-vscroll nil)
+  (setq column-number-mode t)
+  (setq custom-file "~/.emacs.s/custom.el")
+  ;; (setq-default default-directory "/Users/mikaeleliasson/")
+  (setq echo-keystrokes 0.02)
+  (setq frame-resize-pixelwise t)
+  (setq inhibit-startup-screen t)
+  (setq initial-scratch-message "")
+  ;; Map meta to command key.
+  (setq mac-command-modifier 'meta)
+  ;; Type brackets and curly braces with alt keys.
+  (setq mac-option-modifier nil)
+  (setq ring-bell-function 'ignore)
+  (setq scroll-conservatively 101)
+  (setq-default indent-tabs-mode nil)
+  (setq-default line-spacing 3)
+  (setq require-final-newline t)
+  (show-paren-mode t)
+  (tool-bar-mode -1))
 
-(use-package counsel
-  :ensure t
-  :config
-  (global-set-key (kbd "C-c k") 'counsel-ag)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "M-x") 'counsel-M-x))
+;;
+;; Settings for built-in packages
+;;
 
-(use-package swiper
-  :ensure t
+(use-package scroll-bar
+  :ensure nil
   :config
-  (global-set-key (kbd "C-s") 'swiper))
+  (scroll-bar-mode -1))
 
-(use-package super-save
-  :ensure t
+(use-package delsel
+  :ensure nil
   :config
-  (super-save-mode t))
+  (delete-selection-mode +1))
 
-(use-package projectile
-  :ensure t
+(use-package files
+  :ensure nil
   :config
-  (projectile-mode +1)
-  (setq projectile-completion-system 'ivy)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (setq create-lockfiles nil)
+  (setq make-backup-files nil))
+
+(use-package autorevert
+  :ensure nil
+  :config
+  (global-auto-revert-mode +1))
 
 (use-package js
-  :ensure t
+  :ensure nil
   :config
   (setq js-indent-level 2))
 
 (use-package css-mode
-  :ensure t
+  :ensure nil
   :config
-  (setq-default css-indent-offset 2))
+  (setq css-indent-offset 2))
+
+(use-package flyspell
+  :ensure nil
+  :config
+  (setq ispell-program-name "/usr/local/bin/aspell"))
+
+(use-package elec-pair
+  :ensure nil
+  :hook (prog-mode . electric-pair-mode))
+
+(use-package whitespace
+  :ensure nil
+  :hook (before-save . whitespace-cleanup))
+
+(use-package dired
+  :ensure nil
+  :hook (dired-mode . dired-hide-details-mode))
+
+;;
+;; Third-party packages
+;;
+
+(use-package ivy
+  :config
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "%d/%d ")
+  (ivy-mode 1))
+
+(use-package counsel
+  :config
+  (global-set-key (kbd "M-x") 'counsel-M-x))
+
+(use-package swiper
+  :config
+  (global-set-key (kbd "C-s") 'swiper))
+
+;; (use-package smex)
+
+(use-package counsel-projectile
+  :config
+  (counsel-projectile-mode +1))
+
+(use-package projectile
+  :config
+  (projectile-mode +1)
+  ;; (setq projectile-completion-system 'ivy)
+  (define-key projectile-mode-map (kbd "C-c c") #'projectile-ag)
+  (define-key projectile-mode-map (kbd "C-c f") #'projectile-find-file)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(use-package super-save
+  :config
+  (super-save-mode t))
 
 (use-package flycheck
-  :ensure t
   :hook (after-init . global-flycheck-mode))
 
 (use-package exec-path-from-shell
-  :ensure t
   :config
   (exec-path-from-shell-initialize))
 
 (use-package add-node-modules-path
-  :ensure t
   :hook js-mode)
 
 (use-package prettier-js
-  :ensure t
   :hook (js-mode . prettier-js-mode))
 
-(use-package magit
-  :ensure t)
+(use-package magit)
 
 (use-package nyan-mode
-  :ensure t
   :config
   (nyan-mode 1))
 
-(use-package smartparens
-  :ensure t
-  :config
-  (smartparens-global-mode))
-
 (use-package json-mode
   :ensure t)
-
-(use-package go-mode
-  :ensure t
-  :hook (before-save . gofmt-before-save))
 
 (use-package restclient
   :config
   (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode)))
 
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "markdown"))
+(use-package vterm
+  :hook (vterm-mode . (lambda ()
+                        (setq-local global-hl-line-mode nil)
+                        (setq-local line-spacing nil))))
 
-(use-package rubocop
-  :ensure t
-  :hook (ruby-mode . rubocop-mode)
-  :hook (rubocop-mode . flycheck-rubocop-via-bundle-exec))
+(use-package company
+  :hook (prog-mode . company-mode)
+  :config
+  (setq company-minimum-prefix-length 1)
+  ;; Add yasnippet to all backends.
+  (setq company-backends
+        (mapcar #'company-backend-with-yas company-backends)))
 
-;;
-;; Misc. settings
-;;
+(use-package yasnippet
+  :hook (prog-mode . yas-minor-mode))
 
-;; Disable startup screen.
-(setq inhibit-startup-screen t)
+(use-package yasnippet-snippets)
 
-;; Redefine minibuffer startup message.
-(defun display-startup-echo-area-message ()
-  "Customize minibuffer startup message."
-  (message "(ง ͡ʘ ͜ ͡ʘ)ง"))
+;; (use-package markdown-mode
+;;   :ensure t
+;;   :commands (markdown-mode gfm-mode)
+;;   :mode (("README\\.md\\'" . gfm-mode)
+;;          ("\\.md\\'" . markdown-mode)
+;;          ("\\.markdown\\'" . markdown-mode))
+;;   :init (setq markdown-command "markdown"))
 
-;; Skip audible ding.
-(setq ring-bell-function 'ignore)
+;; (use-package go-mode
+;;   :ensure t
+;;   :hook (before-save . gofmt-before-save))
 
-;; Set custom file.
-(setq custom-file "~/.emacs.s/custom.el")
-
-;; Map meta to command key.
-(setq mac-command-modifier 'meta)
-
-;; Type brackets and curly braces with alt keys.
-(setq mac-option-modifier nil)
-
-;; Disable tool bar.
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
-
-;; Disable scroll bar.
-(scroll-bar-mode -1)
-
-;; Increase font size.
-(set-face-attribute 'default nil :height 160)
-
-;; Display column number in mode line.
-(column-number-mode nil)
-
-;; Bind commenting.
-(global-set-key (kbd "M-c") 'comment-or-uncomment-region)
-
-;; Bind cleaning.
-(global-set-key (kbd "M-n") 'simple-clean-region-or-buffer)
-
-;; Do whitespace cleanup on save.
-(add-hook 'before-save-hook 'whitespace-cleanup)
-
-;; Skip tabs.
-(setq-default indent-tabs-mode nil)
-
-;; Skip backups.
-(setq make-backup-files nil)
-
-;; Revert buffers automatically when underlying files are changed
-;; externally.
-(global-auto-revert-mode t)
-
-;; Show matching parentheses.
-(show-paren-mode t)
-
-;; y or n instead of yes and no.
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; UTF-8 always and forever.
-(prefer-coding-system 'utf-8)
-
-;; Ensure that files end with newline.
-(setq require-final-newline t)
-
-;; Show line numbers. (Nice when pair and mob programming.)
-(global-display-line-numbers-mode t)
-
-;; Highlight line containing cursor.
-(global-hl-line-mode t)
+;; (use-package rubocop
+;;   :ensure t
+;;   :hook (ruby-mode . rubocop-mode)
+;;   :hook (rubocop-mode . flycheck-rubocop-via-bundle-exec))
 
 (provide 'init)
 ;;; init.el ends here
