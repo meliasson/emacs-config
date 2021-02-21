@@ -21,7 +21,7 @@ Needed when Rubocop is nested inside another gem."
           (append '("bundle" "exec") command))))
 
 (defun company-backend-with-yas (backends)
-  "Add :with company-yasnippet to company BACKENDS.
+  "Add yasnippet completion to company BACKENDS.
 Taken from https://github.com/syl20bnr/spacemacs/pull/179."
   (if (and (listp backends) (memq 'company-yasnippet backends))
       backends
