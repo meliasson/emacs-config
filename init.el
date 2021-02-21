@@ -237,6 +237,8 @@ reopens file as root."
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous))
 
+(use-package yaml-mode)
+
 (use-package yasnippet
   :hook (prog-mode . yas-minor-mode))
 
