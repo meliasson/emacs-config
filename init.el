@@ -135,6 +135,7 @@ reopens file as root."
 
 (use-package js
   :ensure nil
+  :hook (js-mode . (lambda () (set-fill-column 80)))
   :config
   (setq js-indent-level 2))
 
