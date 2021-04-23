@@ -179,7 +179,7 @@ reopens file as root."
   :config
   (global-set-key (kbd "C-s") 'swiper))
 
-;; (use-package smex)
+(use-package smex)
 
 (use-package counsel-projectile
   :config
