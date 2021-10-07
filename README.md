@@ -1,6 +1,6 @@
 # Emacs config
 
-My Emacs config. Trying to stick to defaults.
+An attempt at bending Emacs to my will.  Without doing too much bending...
 
 ## Installation
 
