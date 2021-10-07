@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: debugPuppeteer
+# key: medbgpptr
+# --
+
+this.timeout(1000000);
+await page.evaluate(() => {
+  debugger;
+});

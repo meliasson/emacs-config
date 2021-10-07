@@ -247,7 +247,10 @@ reopens file as root."
 (use-package yaml-mode)
 
 (use-package yasnippet
-  :hook (prog-mode . yas-minor-mode))
+  :hook (prog-mode . yas-minor-mode)
+  :config
+  ;; Make personal snippets available.
+  (yas-reload-all))
 
 (use-package yasnippet-snippets)
 
