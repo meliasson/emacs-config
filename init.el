@@ -161,6 +161,10 @@ reopens file as root."
   :ensure nil
   :hook (dired-mode . dired-hide-details-mode))
 
+(use-package org
+  :config
+  (setq org-startup-truncated ()))
+
 ;;
 ;; Third-party packages
 ;;
