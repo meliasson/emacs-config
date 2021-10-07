@@ -165,6 +165,8 @@ reopens file as root."
   :config
   (setq org-startup-truncated ()))
 
+(use-package ob-restclient)
+
 ;;
 ;; Third-party packages
 ;;
