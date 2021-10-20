@@ -60,6 +60,11 @@ reopens file as root."
   "Customize minibuffer startup message."
   (message "(ง ͡ʘ ͜ ͡ʘ)ง"))
 
+(defun named-term (name)
+  "Start a terminal with buffer name NAME prefixed with term-."
+  (interactive "sTerminal purpose: ")
+  (vterm (concat "term-" name)))
+
 ;;
 ;; Package management
 ;;
