@@ -98,10 +98,12 @@
   :mode ("README\\.md\\'" . gfm-mode))
 
 ;; Let's see if we can become organized, reflect and learn by keeping
-;; a journal.
+;; a journal. If journal entries are on some kind of share that has
+;; different locations on different computers, you can create a
+;; symlink to ~/journal.
 (use-package org-journal
   :config
-  (setq org-journal-dir "/mnt/c/Users/mikae/Dropbox/Documents/journal"))
+  (setq org-journal-dir "~/journal"))
 
 (provide 'init)
 ;;; init.el ends here
