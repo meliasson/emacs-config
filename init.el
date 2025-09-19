@@ -29,6 +29,7 @@
   :config
   (blink-cursor-mode -1)
   (defalias 'yes-or-no-p 'y-or-n-p)
+  (fido-mode 1)
   (global-hl-line-mode t)
   (menu-bar-mode -1)
   (set-face-attribute 'default nil :height 160)
