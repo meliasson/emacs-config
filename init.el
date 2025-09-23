@@ -106,5 +106,9 @@
   :config
   (setq org-journal-dir "~/journal"))
 
+(use-package solarized-theme
+  :config
+  (load-theme 'solarized-light t))
+
 (provide 'init)
 ;;; init.el ends here
